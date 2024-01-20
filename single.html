@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Bar Water Fills</title>
+</head>
+<style>
+    .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 100px;
+    
+    border-style: solid;
+}
+
+.box {
+    width: 100%; /* Adjust as needed */
+    height: 100px; /* Adjust as needed */
+    background-color: #040a25; /* Initial color */
+    position: relative;
+    overflow: hidden;
+}
+
+.box .fill {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; /* Important change! */
+}
+#button{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+
+}
+@keyframes fillUp {
+    0% { height: 100%; }
+    50% { height: 20%; } /* Adjust height range for bars */
+    100% { height: 100%; }
+}
+#startButton{
+    background-color: #078a51;
+    color: white;
+    font-size: 20px;
+}
+#stopButton{
+    background-color:#e60c0e ;
+    color: white;
+    font-size: 20px;
+}
+#restartButton{
+    background-color: #6d46b6;
+    color: white;
+    font-size: 20px;
+}
+
+</style>
+<body>
+    <div class="container">
+        <div class="box" data-color= #764dbf></div>
+        <div class="box" data-color= #db4ca8></div>
+        <div class="box" data-color= #fe6a8e></div>
+        <div class="box" data-color= #fe956a></div>
+        <div class="box" data-color= #fcce55></div>
+    </div>
+    <div id="button">
+        <button id="startButton">Start</button>
+        <button id="restartButton">Reset</button>
+        <button id="stopButton">Stop</button>
+        
+    </div>
+</body>
+<script>
+    const boxes = document.querySelectorAll(".box");
+
+boxes.forEach((box) => {
+    const fill = document.createElement("div");
+    fill.classList.add("fill");
+    box.appendChild(fill);
+
+    fill.style.backgroundColor = box.dataset.color;
+
+    fill.style.animation = `fillUp 3s ease-in-out infinite alternate`; // Adjust duration as needed
+
+    // Randomize animation starting point for added variation
+    fill.style.animationDelay = Math.random() * 3 + "s"; // Adjust delay range
+
+});
+const startButton = document.getElementById("startButton");
+const stopButton = document.getElementById("stopButton");
+const restartButton = document.getElementById("restartButton");
+
+let animationsPaused = true; // Initially paused
+
+function pauseAnimations() {
+    boxes.forEach((box) => {
+        box.querySelector(".fill").style.animationPlayState = "paused";
+    });
+    animationsPaused = true;
+}
+
+function restartAnimations() {
+    boxes.forEach((box) => {
+        box.querySelector(".fill").style.animation = `fillUp 3s ease-in-out infinite alternate`; // Reset animation
+        box.querySelector(".fill").style.animationDelay = Math.random() * 3 + "s"; // Randomize delay
+    });
+    animationsPaused = false;
+}
+
+startButton.addEventListener("click", () => {
+    if (animationsPaused) {
+        restartAnimations();
+    }
+});
+
+stopButton.addEventListener("click", pauseAnimations);
+
+restartButton.addEventListener("click", restartAnimations);
+</script>
+</html>
